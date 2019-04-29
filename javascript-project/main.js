@@ -80,21 +80,20 @@ function placePlayer() {}
 function initBoard(rows, columns) {}
 
 // Prints the board
-function printBoard() {}
 
 // Sets the player variable to a player object based on the specifications of the README file
 // The items property will need to be a new array of cloned item objects
 // Prints a message showing player name and level (which will be 1 by default)
-function createPlayer(name, level = 1, items = []) {}
+//function createPlayer(name, level = 1, items = []) {}
 
 // Creates a monster object with a random name with the specified level, items and position
 // The items property will need to be a new array of cloned item objects
 // The entity properties (e.g. hp, attack, speed) must respect the rules defined in the README
-function createMonster(level, items, position) {}
+//function createMonster(level, items, position) {}
 
 // Creates a tradesman object with the specified items and position. hp is Infinity
 // The items property will need to be a new array of cloned item objects
-function createTradesman(items, position) {}
+// function createTradesman(items, position) {}
 
 // Creates an item entity by cloning one of the item objects and adding the position and type properties.
 // item is a reference to one of the items in the items variable. It needs to be cloned before being assigned the position and type properties.
@@ -182,11 +181,15 @@ function setupPlayer() {
 
 setupPlayer();
 
-function createPlayer(name, level, items = []) {
+function createPlayer(
+  name,
+  level,
+  items = [{ type: 'item', position: { row: i, column: j } }]
+) {
   console.log(
-    'Created player with name' + ' ' + name,
+    'Created player with name ' + name,
     'and level ' + level,
-    items
+    'with items ' + items
   );
   player = {
     name,
@@ -206,10 +209,40 @@ function createPlayer(name, level, items = []) {
     //levelUp:
   };
 }
+function createMonster(level, items, position) {
+  name = monsterNames[Math.floor(Math.random() * monsterNames.length)];
+  monster = {
+    name,
+    level,
+    items,
+    hp: level * 100,
+    attack: level * 10,
+    exp: 0,
+    gold: 0,
+    items,
+    // getExp,
+    //getMaxHp:,]
+    speed: 6000 / level,
+    type: 'monster',
+    position: {},
+    //levelUp:
+  };
+}
+function createTradesman(items, position) {
+  tradesman = {
+    name: 'Mercenary',
+    hp: 99999,
+    items: [{}],
+    position: {},
+    type: 'tradesman',
+    //getMaxHp
+  };
+}
 
 //BOARD
+
 let board = [];
-function createBoard(rows, cols) {
+function initBoard(rows, cols) {
   for (let i = 0; i < rows; i++) {
     board.push([]);
     for (let j = 0; j < cols; j++) {
@@ -220,6 +253,9 @@ function createBoard(rows, cols) {
       }
     }
   }
+  console.log('Creating board and placing player...');
+  printBoard();
+  placePlayer();
 }
 
 function printBoard() {
@@ -228,12 +264,29 @@ function printBoard() {
   str = '';
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
-      str = board[i].join('');
+      let currentType = board[i][j].type;
+      if (j === cols - 1) {
+        str = str.concat('#\n');
+      } else if (currentType === 'wall') {
+        str = str.concat('#');
+      } else if (currentType === 'grass') {
+        str = str.concat('.');
+      } else if (currentType === 'player') {
+        str = str.concat('P');
+      }
     }
   }
   console.log(str);
 }
-createBoard(10, 10);
-printBoard();
 
-function placePlayer() {}
+function placePlayer() {
+  let rows = board.length;
+  let cols = board[0].length;
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (i === rows / 2 && j === cols / 2) {
+        board[i][j].push(player);
+      }
+    }
+  }
+}
