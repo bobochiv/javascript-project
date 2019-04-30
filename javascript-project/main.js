@@ -181,11 +181,7 @@ function setupPlayer() {
 
 setupPlayer();
 
-function createPlayer(
-  name,
-  level,
-  items = [{ type: 'item', position: { row: i, column: j } }]
-) {
+function createPlayer(name, level, items = [{ type: 'item', position: {} }]) {
   console.log(
     'Created player with name ' + name,
     'and level ' + level,
@@ -248,6 +244,8 @@ function initBoard(rows, cols) {
     for (let j = 0; j < cols; j++) {
       if (i === 0 || i === rows - 1 || j === 0 || j === cols - 1) {
         board[i].push({ type: 'wall', position: { row: i, column: j } });
+      } else if (i === rows / 2 && j === cols / 2) {
+        board[i].push({ type: 'player', position: { row: i, column: j } });
       } else {
         board[i].push({ type: 'grass', position: { row: i, column: j } });
       }
@@ -255,7 +253,6 @@ function initBoard(rows, cols) {
   }
   console.log('Creating board and placing player...');
   printBoard();
-  placePlayer();
 }
 
 function printBoard() {
@@ -273,20 +270,37 @@ function printBoard() {
         str = str.concat('.');
       } else if (currentType === 'player') {
         str = str.concat('P');
+        board[i].push({ player, position: { row: i, column: j } });
       }
     }
   }
+  placePlayer();
   console.log(str);
 }
 
-function placePlayer() {
-  let rows = board.length;
-  let cols = board[0].length;
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      if (i === rows / 2 && j === cols / 2) {
-        board[i][j].push(player);
+function move(direction) {
+  let i = board.length;
+  let j = board[0].length;
+      if ((direction = 'U')) {
+        board[i].push({ player, position: { row: i - 1, column: j } });
+      } else if ((direction = 'D')) {
+        board[i].push({ player, position: { row: i + 1, column: j } });
+      } else if ((direction = 'L')) {
+        board[j].push({ player, position: { row: i, column: j - 1 } });
+      } else if ((direction = 'R')) {
+        board[j].push({ player, position: { row: i, column: j + 1 } });
       }
     }
+    move('U');
   }
 }
+// function placePlayer() {
+//   let rows = board.length;
+//   let cols = board[0].length;
+//   for (let i = 0; i < rows; i++) {
+//     for (let j = 0; j < cols; j++) {
+//       if (i === rows / 2 && j === cols / 2) {
+//       }
+//     }
+//   }
+// }
