@@ -168,8 +168,8 @@ steal:
 
 Items have the following properties
 
-- name (string - Use the rarity name + type. Example for type 'potion' and rarity 0 -> Common potion)
-- type (string - type of item)
+- name (string - Use the rarity name + type. Example for potions and rarity 0 -> Common potion)
+- type (string - 'item')
 - value (number)
 - rarity (number - index of the corresponding rarity in RARITY_LIST, e.g. 0 is 'Common')
 - use (function - expects a target as parameter to specify on which target to use the item)
@@ -178,7 +178,7 @@ Items have the following properties
 potion:
 
 - name: 'Common potion' (if rarity 0)
-- type: 'potion'
+- type: 'item'
 - value: 5
 - rarity: 0
 - use: restores 25hp to the specified target
@@ -186,7 +186,7 @@ potion:
 bomb:
 
 - name: 'Common bomb' (if rarity 0)
-- type: 'bomb'
+- type: 'item'
 - value: 7
 - rarity: 0
 - use: deals 50hp damage to the specified target
@@ -194,12 +194,13 @@ bomb:
 key:
 
 - name: 'Epic key'
-- type: 'key'
+- type: 'item'
 - value: 150
 - rarity: 3
 - use: Unlocks the door to a dungeon
 
-You can tweak the properties and make more item objects
+You can use the item name to check if the item is a potion, a bomb, or the key.  
+You can tweak the property values and make more item objects.
 
 Bonus:  
 Potion with rarity 3 restores 100% hp (sets hp back to max hp)  
